@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" name="viewport"/>
 <meta content="light dark" name="color-scheme"/>
 <title>Olympic Triathlon Build - 12-Week Interactive Report</title>
 <!-- Single-file iPhone web-app / PWA metadata. -->
@@ -303,13 +303,14 @@ footer{margin-top:34px;color:var(--muted);font-size:12px;text-align:center}
 #cmp-sleep:not(:checked) ~ #compareLegend label[for="cmp-sleep"]{opacity:.42;text-decoration:line-through}
 #cmp-sleep:not(:checked) ~ #compareChart .series-sleep{display:none}
 /* Standalone iPhone web-app polish. */
-html,body{-webkit-text-size-adjust:100%}
+html,body{-webkit-text-size-adjust:100%;touch-action:pan-x pan-y;scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar,.page::-webkit-scrollbar{display:none;width:0;height:0}
 @supports (padding: env(safe-area-inset-top)) {
   .topbar{padding-top:env(safe-area-inset-top)}
   .shell{padding-bottom:max(72px,calc(50px + env(safe-area-inset-bottom)))}
 }
 @media (display-mode: standalone) {
-  .topbar{position:sticky;top:0}
+  .topbar{position:sticky;top:0;padding-top:calc(env(safe-area-inset-top, 0px) + 16px)}
   body{overscroll-behavior-y:none}
 }
 
@@ -483,5 +484,16 @@ html,body{-webkit-text-size-adjust:100%}
 })();
 </script>
 
+<script>
+(function(){
+  function stopGesture(e){ e.preventDefault(); }
+  document.addEventListener('gesturestart', stopGesture, {passive:false});
+  document.addEventListener('gesturechange', stopGesture, {passive:false});
+  document.addEventListener('gestureend', stopGesture, {passive:false});
+  document.addEventListener('touchmove', function(e){
+    if (e.touches && e.touches.length > 1) e.preventDefault();
+  }, {passive:false});
+})();
+</script>
 </body>
 </html>
